@@ -1,0 +1,27 @@
+{
+  "name": "wh-01",
+  "version": "1.0.0",
+  "description": "Node course homework",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --es-module-specifier-resolution=node ./src/index.js",
+    "dev": "nodemon --es-module-specifier-resolution=node ./src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IgorVerchyk/goit-node-hw.git"
+  },
+  "author": "Igor Verchyk <igorverchyk@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IgorVerchyk/goit-node-hw/issues"
+  },
+  "homepage": "https://github.com/IgorVerchyk/goit-node-hw#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  },
+  "dependencies": {
+    "uuidv4": "^6.2.5",
+    "yargs": "^16.1.0"
+  }
+}
