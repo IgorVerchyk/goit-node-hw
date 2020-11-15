@@ -1,18 +1,20 @@
-## Homework 01
+## Homework 02
 
-- ### geting contacts data from file and insert it into the table
+To complete this task i based on lesson 4 code and adopted it structure for this homework. Also, i adopted "contact.json" file to able lowdb get value from this file.
 
-```
-  node index.js --action="list"
-```
+- ### server is operational
+
+![server worked](/screenshots/server.jpg)
+
+- ### geting contacts data
+
+executing GET request and getting object with contacts array
 
 ![first task](/screenshots/task1.jpg)
 
 - ### searchig one spesific contact by id
 
-```
-  node index.js --action="get" --id=5
-```
+executing GET request and
 
 ![second task](/screenshots/task2.jpg)
 
