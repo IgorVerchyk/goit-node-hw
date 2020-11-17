@@ -1,8 +1,8 @@
 ## Homework 02
 
-To complete this task i based on lesson 4 code and adopted it structure for this homework. Also, i adopted "contact.json" file to able lowdb get value from this file.
+By doing this task, i used lesson 4 code structure to do this work more compatible with next homeworks. Also i use lowdb library, and change contacts.json file to get able lowdb methods work with this file. Can refator this work without using this library if needed.
 
-- ### server is operational
+- ### server runing and it's operational
 
 ![server worked](/screenshots/server.jpg)
 
@@ -14,22 +14,30 @@ executing GET request and getting object with contacts array
 
 - ### searchig one spesific contact by id
 
-executing GET request and
+GET request with params and getting object with contact
 
 ![second task](/screenshots/task2.jpg)
 
 - ### add new contact
 
-```
-  node index.js --action="add" --name="Mango" --email="mango@gmail.com" --phone="322-22-22"
-```
+POST request with params and getting object with new contact
 
 ![thirt task](/screenshots/task3.jpg)
 
+validator works well
+
+![thirt task](/screenshots/task3validation.jpg)
+
 - ### remove contact from list
 
-```
-  node index.js --action="remove" --id=3
-```
+Delete request removed contact by id
+
+never like this guy
 
 ![four task](/screenshots/task4.jpg)
+
+- ### pach contact
+
+PATCH request
+
+![four task](/screenshots/task5.jpg)

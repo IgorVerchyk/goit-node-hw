@@ -8,9 +8,7 @@ const getAll = (req, res, next) => {
     res.status(HttpCode.OK).json({
       status: "success",
       code: HttpCode.OK,
-      data: {
-        contacts,
-      },
+      data: contacts,
     });
   } catch (e) {
     next(e);
@@ -23,9 +21,7 @@ const getById = (req, res, next) => {
       return res.status(HttpCode.OK).json({
         status: "success",
         code: HttpCode.OK,
-        data: {
-          contact,
-        },
+        data: contact,
       });
     } else {
       return next({
@@ -45,9 +41,7 @@ const create = (req, res, next) => {
     res.status(HttpCode.CREATED).json({
       status: "success",
       code: HttpCode.CREATED,
-      data: {
-        contact,
-      },
+      data: contact,
     });
   } catch (e) {
     next(e);
@@ -61,9 +55,7 @@ const update = (req, res, next) => {
       return res.status(HttpCode.OK).json({
         status: "success",
         code: HttpCode.OK,
-        data: {
-          contact,
-        },
+        data: contact,
       });
     } else {
       return next({
@@ -83,9 +75,7 @@ const remove = (req, res, next) => {
       return res.status(HttpCode.OK).json({
         status: "success",
         code: HttpCode.OK,
-        data: {
-          contact,
-        },
+        data: contact,
       });
     } else {
       return next({

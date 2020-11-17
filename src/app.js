@@ -2,12 +2,12 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const { HttpCode } = require("./helpers/constants");
-const routerContacts = require("./api/contacts");
+const contactsRouter = require("./api/contacts/index");
 
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/contacts", routerContacts);
+app.use("/api/contacts", contactsRouter);
 
 app.use((req, res, next) => {
   res.status(HttpCode.NOT_FOUND).json({
@@ -30,5 +30,5 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server running. Use our API on port: ${PORT}`);
+  console.log(`Server running on port: ${PORT}`);
 });
