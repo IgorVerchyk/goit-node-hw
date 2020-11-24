@@ -1,44 +1,36 @@
-const { v4: uuid } = require("uuid");
-
-const db = require("../db/index");
+const Contact = require("../schemas/contact");
 
 class ContactsRepository {
-  parseId(id) {
-    //this kostyli needed because lowdb library methods must be able to work with int value of id:key in default contacts.json
-    return id.length < 2 ? parseInt(id) : id;
+  constructor() {
+    this.model = Contact;
   }
-  getAll() {
-    return db.get("contacts").value();
+
+  async getAll() {
+    const results = await this.model.find({});
+    return results;
   }
-  getById(id) {
-    const parsedId = this.parseId(id);
-    console.log(parsedId);
-    return db.get("contacts").find({ id: parsedId }).value();
+  async getById(id) {
+    const result = await this.model.findOne({ _id: id });
+    return result;
   }
-  create(body) {
-    const id = uuid();
-    const record = {
-      id,
-      ...body,
-    };
-    db.get("contacts").push(record).write();
-    return record;
+
+  async create(body) {
+    const result = await this.model.create(body);
+    return result;
   }
-  update(id, body) {
-    const parsedId = this.parseId(id);
-    const record = db
-      .get("contacts")
-      .find({ id: parsedId })
-      .assign(body)
-      .value();
-    db.write();
-    return record.id ? record : null;
+  async update(id, body) {
+    const result = await this.model.findByIdAndUpdate(
+      { _id: id },
+      { ...body },
+      { new: true }
+    );
+    return result;
   }
-  remove(id) {
-    const parsedId = this.parseId(id);
-    const [record] = db.get("contacts").remove({ id: parsedId }).write();
-    return record;
+  async remove(id) {
+    const result = await this.model.findByIdAndRemove({
+      _id: id,
+    });
+    return result;
   }
 }
-
 module.exports = ContactsRepository;
