@@ -5,12 +5,18 @@ const schemaCreateContact = Joi.object({
   name: Joi.string().min(6).required(),
   email: Joi.string().min(6).required(),
   phone: Joi.number().min(6).required(),
+  subscription: Joi.string(),
+  password: Joi.string().pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")),
+  token: Joi.any(),
 });
 
 const schemaUpdateContact = Joi.object({
   name: Joi.string().min(6).optional(),
   email: Joi.string().min(6).optional(),
   phone: Joi.number().min(6).optional(),
+  subscription: Joi.string(),
+  password: Joi.string().pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")),
+  token: Joi.any(),
 });
 
 const validate = (schema, body, next) => {

@@ -2,9 +2,9 @@ const { HttpCode } = require("../helpers/constants");
 const { ContactsService } = require("../services/index");
 const contactService = new ContactsService();
 
-const getAll = (req, res, next) => {
+const getAll = async (req, res, next) => {
   try {
-    const contacts = contactService.getAll();
+    const contacts = await contactService.getAll();
     res.status(HttpCode.OK).json({
       status: "success",
       code: HttpCode.OK,
@@ -14,9 +14,9 @@ const getAll = (req, res, next) => {
     next(e);
   }
 };
-const getById = (req, res, next) => {
+const getById = async (req, res, next) => {
   try {
-    const contact = contactService.getById(req.params);
+    const contact = await contactService.getById(req.params);
     if (contact) {
       return res.status(HttpCode.OK).json({
         status: "success",
@@ -35,9 +35,9 @@ const getById = (req, res, next) => {
   }
 };
 
-const create = (req, res, next) => {
+const create = async (req, res, next) => {
   try {
-    const contact = contactService.create(req.body);
+    const contact = await contactService.create(req.body);
     res.status(HttpCode.CREATED).json({
       status: "success",
       code: HttpCode.CREATED,
@@ -48,9 +48,9 @@ const create = (req, res, next) => {
   }
 };
 
-const update = (req, res, next) => {
+const update = async (req, res, next) => {
   try {
-    const contact = contactService.update(req.params, req.body);
+    const contact = await contactService.update(req.params, req.body);
     if (contact) {
       return res.status(HttpCode.OK).json({
         status: "success",
@@ -68,9 +68,9 @@ const update = (req, res, next) => {
     next(e);
   }
 };
-const remove = (req, res, next) => {
+const remove = async (req, res, next) => {
   try {
-    const contact = contactService.remove(req.params);
+    const contact = await contactService.remove(req.params);
     if (contact) {
       return res.status(HttpCode.OK).json({
         status: "success",
