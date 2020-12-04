@@ -1,12 +1,36 @@
 const express = require("express");
 const cors = require("cors");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 const app = express();
+const { ErrorHandler } = require("./helpers/errorHandler");
 const { HttpCode } = require("./helpers/constants");
 const contactsRouter = require("./api/contacts/index");
 
-app.use(cors());
-app.use(express.json());
+const { apiLimit, jsonLimit } = require("./config/rate-limit.json");
+const userRouter = require("./api/users/users");
 
+app.use(helmet());
+app.use(cors());
+app.use(express.json({ limit: jsonLimit }));
+
+app.use(
+  "/api/",
+  rateLimit({
+    windowMs: apiLimit.windowMs,
+    max: apiLimit.max,
+    handler: (req, res, next) => {
+      next(
+        new ErrorHandler(
+          HttpCode.BAD_REQUEST,
+          "You have send too many requests on 15 min."
+        )
+      );
+    },
+  })
+);
+
+app.use("/api/users", userRouter);
 app.use("/api/contacts", contactsRouter);
 
 app.use((req, res, next) => {
