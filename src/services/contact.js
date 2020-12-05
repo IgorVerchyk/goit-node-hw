@@ -6,8 +6,8 @@ class ContactsService {
       contacts: new ContactsRepository(),
     };
   }
-  async getAll() {
-    const data = await this.repositories.contacts.getAll();
+  async getAll(query) {
+    const data = await this.repositories.contacts.getAll(query);
     return data;
   }
   async getById({ id }) {

@@ -1,8 +1,7 @@
-const { required } = require("joi");
 const ContactsRepository = require("./contacts");
-const UserRepository = require("./users");
+const UsersRepository = require("./users");
 
 module.exports = {
   ContactsRepository,
-  UserRepository,
+  UsersRepository,
 };
