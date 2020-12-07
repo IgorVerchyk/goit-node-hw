@@ -5,9 +5,12 @@ class ContactsRepository {
     this.model = Contact;
   }
 
-  async getAll() {
-    const results = await this.model.find({});
-    return results;
+  async getAll({ page = 1, limit = 20 }) {
+    const { docs: contacts, totalDocs: total } = await this.model.paginate(
+      {},
+      { page, limit }
+    );
+    return { contacts, total, page, limit };
   }
   async getById(id) {
     const result = await this.model.findOne({ _id: id });

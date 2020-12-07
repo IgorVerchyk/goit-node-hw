@@ -4,7 +4,7 @@ const contactService = new ContactsService();
 
 const getAll = async (req, res, next) => {
   try {
-    const contacts = await contactService.getAll();
+    const contacts = await contactService.getAll(req.query);
     res.status(HttpCode.OK).json({
       status: "success",
       code: HttpCode.OK,
@@ -16,6 +16,7 @@ const getAll = async (req, res, next) => {
 };
 const getById = async (req, res, next) => {
   try {
+    const userId = req.user.id;
     const contact = await contactService.getById(req.params);
     if (contact) {
       return res.status(HttpCode.OK).json({
@@ -37,7 +38,8 @@ const getById = async (req, res, next) => {
 
 const create = async (req, res, next) => {
   try {
-    const contact = await contactService.create(req.body);
+    const userId = req.user.id;
+    const contact = await contactService.create(userId, req.body);
     res.status(HttpCode.CREATED).json({
       status: "success",
       code: HttpCode.CREATED,
