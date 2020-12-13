@@ -23,6 +23,15 @@ class UsersRepository {
   async updateToken(id, token) {
     await this.model.updateOne({ _id: id }, { token });
   }
+
+  async updateAvatar(id, avatar, cloudAvatarId) {
+    await this.model.updateOne({ _id: id }, { avatar, cloudAvatarId });
+  }
+
+  async getAvatar(id) {
+    const { avatar, cloudAvatarId } = await this.model.findOne({ _id: id });
+    return { avatar, cloudAvatarId };
+  }
 }
 
 module.exports = UsersRepository;

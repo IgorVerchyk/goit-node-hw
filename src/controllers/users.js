@@ -4,7 +4,7 @@ const userService = new UserService();
 const authService = new AuthService();
 
 const reg = async (req, res, next) => {
-  const { name, email, password, sex } = req.body;
+  const { name, email, password } = req.body;
   const user = await userService.findByEmail(email);
   if (user) {
     return next({
@@ -21,7 +21,7 @@ const reg = async (req, res, next) => {
       data: {
         id: newUser.id,
         email: newUser.email,
-        sex: newUser.sex,
+        avatar: newUser.avatar,
       },
     });
   } catch (e) {
@@ -59,8 +59,18 @@ const logout = async (req, res, next) => {
     .json({ status: "success", code: HttpCode.NO_CONTENT });
 };
 
+const avatars = async (req, res, next) => {
+  const id = req.user.id;
+  const pathFile = req.file.path;
+  const url = await userService.updateAvatar(id, pathFile);
+  return res
+    .status(HttpCode.OK)
+    .json({ status: "success", code: HttpCode.OK, avatarUrl: url });
+};
+
 module.exports = {
   reg,
   login,
   logout,
+  avatars,
 };
