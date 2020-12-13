@@ -3,9 +3,16 @@ const usersController = require("../../controllers/users");
 const router = express.Router();
 const guard = require("../../helpers/guard");
 const { createAccountLimiter } = require("../../helpers/reate-limit");
+const upload = require("../../helpers/multer");
 
 router.post("/registration", createAccountLimiter, usersController.reg);
 router.post("/login", usersController.login);
 router.post("/logout", guard, usersController.logout);
+router.patch(
+  "/avatars",
+  guard,
+  upload.single("avatar"),
+  usersController.avatars
+);
 
 module.exports = router;

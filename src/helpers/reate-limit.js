@@ -3,7 +3,7 @@ const { HttpCode } = require("./constants");
 
 const createAccountLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
-  max: 2,
+  max: 8,
   handler: (req, res, next) => {
     res.status(HttpCode.BAD_REQUEST).json({
       status: "error",

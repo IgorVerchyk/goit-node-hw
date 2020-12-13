@@ -1,7 +1,18 @@
 const { UsersRepository } = require("../repository");
+const cloudinary = require("cloudinary").v2;
+const fs = require("fs/promises");
+require("dotenv").config();
+const { ErrorHandler } = require("../helpers/errorHandler");
 
 class UserService {
   constructor() {
+    this.cloudinary = cloudinary;
+    this.cloudinary.config({
+      cloud_name: process.env.CLOUD_NAME,
+      api_key: process.env.API_KEY,
+      api_secret: process.env.API_SECRET,
+    });
+
     this.repositories = {
       users: new UsersRepository(),
     };
@@ -20,6 +31,46 @@ class UserService {
     const data = await this.repositories.users.findById(id);
     return data;
   }
+
+  async updateAvatar(id, pathFile) {
+    try {
+      const {
+        secure_url: avatar,
+        public_id: cloudAvatarId,
+      } = await this.#uploadCloud(pathFile);
+      const oldAvatar = await this.repositories.users.getAvatar(id);
+      this.cloudinary.uploader.destroy(
+        oldAvatar.cloudAvatarId,
+        (err, result) => {
+          console.log(err, result);
+        }
+      );
+      await this.repositories.users.updateAvatar(id, avatar, cloudAvatarId);
+      await fs.unlink(pathFile);
+      return avatar;
+    } catch (err) {
+      throw new ErrorHandler(null, "Error upload avatar");
+    }
+  }
+
+  #uploadCloud = (pathFile) => {
+    return new Promise((resolve, reject) => {
+      this.cloudinary.uploader.upload(
+        pathFile,
+        {
+          folder: "Avatars",
+          transformation: {
+            width: 250,
+            crop: "fill",
+          },
+        },
+        (error, result) => {
+          if (error) reject(error);
+          if (result) resolve(result);
+        }
+      );
+    });
+  };
 }
 
 module.exports = UserService;
