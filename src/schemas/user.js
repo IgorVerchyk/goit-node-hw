@@ -1,50 +1,61 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
-const SALT_FACTOR = 6;
 const { Schema } = mongoose;
+const bcrypt = require("bcryptjs");
 const gravatar = require("gravatar");
+const { boolean } = require("joi");
+
+const SALT_FACTOR = 6;
 
 const userSchema = new Schema(
   {
-    name: {
-      type: String,
-      minlength: 3,
-      default: "Guest",
-    },
-
     email: {
       type: String,
       required: [true, "Email is required"],
       unique: true,
       validate(value) {
         const re = /\S+@\S+\.\S+/;
-        return re.test(String(value).toLowerCase());
+        return re.test(String(value).toLocaleLowerCase());
       },
     },
     password: {
       type: String,
       required: [true, "Password is required"],
     },
+    subscription: {
+      type: String,
+      enum: ["free", "pro", "premium"],
+      default: "free",
+    },
     token: {
       type: String,
       default: null,
     },
-    avatar: {
+    avatarURL: {
       type: String,
       default: function () {
         return gravatar.url(this.email, { s: "250" }, true);
       },
     },
-    cloudAvatarId: {
+    idCloudAvatar: {
       type: String,
       default: null,
+    },
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+      required: [true, "Verify token is required"],
     },
   },
   { versionKey: false, timestamps: true }
 );
 
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
+  if (!this.isModified("password")) {
+    return next();
+  }
   this.password = await bcrypt.hash(
     this.password,
     bcrypt.genSaltSync(SALT_FACTOR)
