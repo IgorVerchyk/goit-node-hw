@@ -21,11 +21,31 @@ const reg = async (req, res, next) => {
       data: {
         id: newUser.id,
         email: newUser.email,
+        subscription: newUser.subscription,
         avatar: newUser.avatar,
       },
     });
   } catch (e) {
     next(e);
+  }
+};
+
+const current = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const user = await userService.getCurrentUser(userId);
+    if (user) {
+      return res
+        .status(HttpCode.OK)
+        .json({ status: "success", code: HttpCode.OK, data: { user } });
+    } else {
+      return next({
+        status: HttpCode.UNAUTHORIZED,
+        message: "Invalid credentials",
+      });
+    }
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -68,9 +88,34 @@ const avatars = async (req, res, next) => {
     .json({ status: "success", code: HttpCode.OK, avatarUrl: url });
 };
 
+const verify = async (req, res, next) => {
+  try {
+    const result = await userService.verify(req.params);
+    if (result) {
+      return res.status(HttpCode.OK).json({
+        status: "success",
+        code: HttpCode.OK,
+        data: {
+          message: "Verification successful",
+        },
+      });
+    } else {
+      return next({
+        status: HttpCode.BAD_REQUEST,
+        message:
+          "Your verification token is not valid. Contact the administration",
+      });
+    }
+  } catch (e) {
+    next(e);
+  }
+};
+
 module.exports = {
   reg,
+  current,
   login,
   logout,
   avatars,
+  verify,
 };
